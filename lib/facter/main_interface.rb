@@ -20,6 +20,7 @@ Facter.add('main_interface') do
   setcode do
     begin
       main_interface = `route get default | awk '/interface/ { print $2 }'`.strip
+      main_interface = main_interface.sub(':', '_')
     rescue
       main_interface = 'none'
     end
