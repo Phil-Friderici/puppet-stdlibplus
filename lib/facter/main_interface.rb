@@ -6,7 +6,7 @@ Facter.add('main_interface') do
   setcode do
     begin
       main_interface = `netstat -r | awk '/^default/ { print $NF }'`.strip
-      main_interface = main_interface.gsub('/[^a-zA-Z0-9]/', '_')
+      main_interface = main_interface.gsub(/[^a-z0-9_]/i, '_')
     rescue
       main_interface = 'none'
     end
