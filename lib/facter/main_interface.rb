@@ -21,6 +21,11 @@ Facter.add('main_interface') do
   setcode do
     begin
       main_interface = `route get default | awk '/interface/ { print $2 }'`.strip
+
+      if main_interface.empty?
+        main_interface = `netstat -rn | awk '/^default/ { print $6 }' | head -1`.strip
+      end
+
       main_interface = main_interface.gsub(/[^a-z0-9_]/i, '_')
 
       if Facter.value(:is_virtual).strip == 'true'
