@@ -16,8 +16,10 @@ module Puppet::Parser::Functions
 
     args.each do |arg|
       begin
-        unless arg.is_a?(Integer)
+        if arg.is_a?(String) and arg =~ /^[0-9]{1,5}$/
           arg = arg.to_i
+        elsif not arg.is_a?(Integer)
+          raise
         end
 
         unless arg > 0 and arg <= 65535
